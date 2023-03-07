@@ -5,7 +5,7 @@ import cls from './index.less'
 import LangDropdown from './item/LangDropdown'
 import UserDropdown from './item/UserDropdown'
 import SiderMenu from './item/SiderMenu'
-import { SettingOutlined } from '@ant-design/icons'
+import * as icons from '@ant-design/icons'
 import { _t } from '@/utils'
 import _ from 'lodash'
 
@@ -13,12 +13,15 @@ const { Header, Footer, Sider, Content } = Layout;
 
 export default (props) => {
     const { location: { pathname }, route: { routes } } = props
-    console.log(routes)
 
     if(pathname == '/') return <Redirect to="/home" />
+    else if(pathname == '/notFound') return <div>{ props.children }</div>
+    else if(pathname == '/signIn') return <div>{ props.children }</div>
     
     let menuItems = handleMenu(routes)
     const activeMenu = findCurrentMenu(menuItems, pathname)
+    // console.log(routes)
+    console.log(menuItems)
 
     return (
         <Layout>
@@ -33,7 +36,7 @@ export default (props) => {
             </Header>
 
             <Layout>
-                <Sider className={cls.sider} style={{background:'#fff'}}>
+                <Sider breakpoint="md" theme={'light'} className={cls.sider}>
                     <SiderMenu menuItems={menuItems} activeMenu={activeMenu} />
                 </Sider>
                 <Layout>
@@ -62,20 +65,21 @@ function getItem(label, key, icon, children, type) {
 function handleMenu(routes){
     let arr = []
     routes.map(t1 => {
-        arr.push(
-            getItem(
-                _t(t1.label), 
-                t1.path, 
-                <SettingOutlined />, 
-                t1.routes?.map(t2 => getItem(_t(t2.label), t2.path, t2.icon))
-            )
-        )
+        if(t1.hidden) return    // 不显示在菜单
+        // 处理层级菜单
+        let names = t1.path.split('/').slice(1)
+        let firstKey = `/${names.at(0)}`
+        if(names.length == 1) return arr.push(getItem(_t(t1.label), t1.path, t1.icon && React.createElement(icons[t1.icon])))  // 菜单栏只有一层 没有children
+
+        let firstMenu = arr.find(item => firstKey.includes(item.key))
+        if(firstMenu) firstMenu.children.push(getItem(_t(t1.label), t1.path))
+        else arr.push(getItem(_t(names.at(0)), firstKey, t1.icon && React.createElement(icons[t1.icon]), [ getItem(_t(t1.label), t1.path) ]))
     })
     return arr
 }
 
 function findCurrentMenu(menuItems, pathname){
-    let curItem = menuItems.find(t => pathname.includes(t.key))
+    let curItem = menuItems.find(t => pathname.includes(t.key)) || {}
     let curChil = ''
     menuItems.map(t => { 
         t.children?.map(t2 => {

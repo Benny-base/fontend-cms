@@ -16,7 +16,6 @@ const Page = () => {
     );
 }
 
-Page.label = 'home'
-Page.icon = 'SettingOutlined'
+Page.label = 'appUser'
 
 export default Page

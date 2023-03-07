@@ -9,14 +9,14 @@ const Page = () => {
     }
 
     return (
-            <div>
-                <div className={styles.title}>Page index</div>
-                <Button onClick={handleClick}>get Info</Button>
-            </div>
+        <div>
+            <div className={styles.title}>Page index</div>
+            <Button onClick={handleClick}>get Info</Button>
+        </div>
     );
 }
 
-Page.label = 'home'
+Page.label = 'notice'
 Page.icon = 'SettingOutlined'
 
 export default Page

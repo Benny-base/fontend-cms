@@ -22,24 +22,24 @@ export default defineConfig({
             changeOrigin: true,
         },
     },
-    routes: [
-        { path: '/signIn', component: '@/pages/signIn' },
-        {
-            path: '/',
-            component: '@/layouts',
-            routes: [
-                { exact: true, path: '/home', component: '@/pages/home', label: 'home' },
-                { 
-                    path: '/platform', 
-                    label: 'platform',
-                    routes: [
-                        { exact: true, path: '/platform/menuManage', component: '@/pages/platform/menuManage', label: 'menuManage' },
-                        { exact: true, path: '/platform/roleManage', component: '@/pages/platform/roleManage', label: 'roleManage' },
-                    ]
-                },
-            ],
-        }, 
-    ],
+    // routes: [
+    //     { path: '/signIn', component: '@/pages/signIn' },
+    //     {
+    //         path: '/',
+    //         component: '@/layouts',
+    //         routes: [
+    //             { exact: true, path: '/home', component: '@/pages/home', label: 'home' },
+    //             { 
+    //                 path: '/platform', 
+    //                 label: 'platform',
+    //                 routes: [
+    //                     { exact: true, path: '/platform/menuManage', component: '@/pages/platform/menuManage', label: 'menuManage' },
+    //                     { exact: true, path: '/platform/roleManage', component: '@/pages/platform/roleManage', label: 'roleManage' },
+    //                 ]
+    //             },
+    //         ],
+    //     }, 
+    // ],
     fastRefresh: {},
     mfsu: {}, // 优化dev启动时间 热更新
 });

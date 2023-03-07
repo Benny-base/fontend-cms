@@ -1,6 +1,7 @@
 import { getLocale, request } from 'umi'
 import { langConfig } from '@/utils'
 import { UserStore } from '@/stores'
+import { history } from 'umi';
 
 export const requestConfig = {
     timeout: 10000,
@@ -12,11 +13,14 @@ export const requestConfig = {
         // }
     ],
     responseInterceptors: [
-        // async(response) => {
-        //     const data = await response.clone().json();
-        //     console.log(data)
-        //     return response
-        // }
+        async(response) => {
+            const data = await response.clone().json();
+            if(data.code == 1000){
+                UserStore.setToken('')
+                history.replace('/signIn')
+            }
+            return response
+        }
     ],
 }
 
@@ -26,7 +30,7 @@ async function callApi(url, data = {}, method){
         headers: {
             'lang': langConfig[getLocale()].api,
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${UserStore.info.token || ''}`
+            'Authorization': `Bearer ${UserStore.token || ''}`
         }
     }
 

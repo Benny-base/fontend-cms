@@ -1,5 +1,6 @@
-import { observable, action, makeAutoObservable } from "mobx";
+import { observable, action, makeAutoObservable, computed } from "mobx";
 import request from '@/utils/request'
+import { saveSetting } from '@/utils'
 
 class User {
 
@@ -11,6 +12,7 @@ class User {
     }
 
     setToken = (token) => {
+        saveSetting('token', token)
         this.token = token
     }
 
@@ -18,15 +20,21 @@ class User {
         this.info = info
     }
 
+    @computed
+    get isLogin() {
+        return !!this.token
+    }
+
+    @action
+    getUserInfo = (data) => {
+        return request.post('/api/v1/user/userInfo', data)
+    }
+
     @action
     signIn = (data) => {
         return request.post('/api/v1/user/signIn', data)
     }
 
-    @action
-    addManager = (data) => {
-        return request.post('/api/v1/user/addManager', data)
-    }
 }
 
 export default new User();
