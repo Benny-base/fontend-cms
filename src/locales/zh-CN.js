@@ -11,4 +11,13 @@ export default {
     message: '消息',
     pushMessage: '推送消息',
     notice: '通知',
+    add: '新增',
+    delete: '删除',
+    selectLeastOneItem: '至少选择一项',
+    operation: '操作',
+    edit: '编辑',
+    search: '搜索',
+    reset: '重置',
+    cancel: '取消',
+    submit: '提交',
 };

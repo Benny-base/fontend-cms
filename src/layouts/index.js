@@ -6,7 +6,7 @@ import LangDropdown from './item/LangDropdown'
 import UserDropdown from './item/UserDropdown'
 import SiderMenu from './item/SiderMenu'
 import * as icons from '@ant-design/icons'
-import { _t } from '@/utils'
+import { useI18n } from '@/utils'
 import _ from 'lodash'
 
 const { Header, Footer, Sider, Content } = Layout;
@@ -15,7 +15,6 @@ export default (props) => {
     const { location: { pathname }, route: { routes } } = props
 
     if(pathname == '/') return <Redirect to="/home" />
-    else if(pathname == '/notFound') return <div>{ props.children }</div>
     else if(pathname == '/signIn') return <div>{ props.children }</div>
     
     let menuItems = handleMenu(routes)
@@ -63,6 +62,7 @@ function getItem(label, key, icon, children, type) {
 
 // 处理routes
 function handleMenu(routes){
+    const _t = useI18n()
     let arr = []
     routes.map(t1 => {
         if(t1.hidden) return    // 不显示在菜单

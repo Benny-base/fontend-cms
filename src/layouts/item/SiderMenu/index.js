@@ -1,6 +1,5 @@
 import React from 'react';
 import { Menu, Row } from 'antd';
-import { _t } from '@/utils'
 import { history } from 'umi'
 
 export default (props) => {

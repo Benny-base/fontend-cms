@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { Dropdown, Menu } from 'antd';
 import cls from './index.less'
-import { _t } from '@/utils'
+import { useI18n } from '@/utils'
 
 export default (props) => {
+    const _t = useI18n()
 
     let arr = [
         { text: _t('mine') },

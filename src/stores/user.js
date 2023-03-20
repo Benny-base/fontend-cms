@@ -35,6 +35,20 @@ class User {
         return request.post('/api/v1/user/signIn', data)
     }
 
+    @action
+    getList = (data) => {
+        return { 
+            code: 0,
+            success: true,
+            data: [
+                { id: 1, name: '大蛇丸1', address: '木叶', status: 1, age: 16 },
+                { id: 2, name: '大蛇丸2', address: '木叶', status: 1, age: 16 },
+                { id: 3, name: '大蛇丸3', address: '木叶', status: 0, age: 16 },
+                { id: 4, name: '大蛇丸4', address: '木叶', status: 0, age: 16 },
+            ]
+        }
+    }
+
 }
 
 export default new User();
