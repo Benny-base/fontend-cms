@@ -10,6 +10,6 @@ const Page = () => {
 }
 
 Page.hidden = true
-Page.label = 'notFound'
+Page.label = '404'
 
 export default Page

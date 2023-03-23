@@ -62,11 +62,17 @@ export const reformatFormData = (columns, values) => {
 
 // 转换键值对  兼容组件的对应可用的key value
 export const transformEnum = (enumObj = { label: 'label', value: 'value' }, data) => {
-    _.forIn(enumObj, (val, key) => {
-        data = data.map(item => {
+    // 递归 有 children 的情况继续转换
+    const recursion = (list = [], val, key) => {
+        list = list.map(item => {
             item[key] = item[val]
+            if(!_.isEmpty(item.children)) item.children = recursion(item.children, val, key)
             return item
         })
+        return list
+    }
+    _.forIn(enumObj, (val, key) => {
+        data = recursion(data, val, key)
     })
     return data
 }

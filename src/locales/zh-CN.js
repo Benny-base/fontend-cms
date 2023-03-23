@@ -20,4 +20,5 @@ export default {
     reset: '重置',
     cancel: '取消',
     submit: '提交',
+    enumManage: '枚举管理',
 };

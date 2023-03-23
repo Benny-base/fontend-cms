@@ -1,7 +1,7 @@
 import cls from './index.less';
 import { Crud } from '@/components'
 import { RoleStore } from '@/stores'
-import { wait } from '@/utils'
+import { wait, getOptions } from '@/utils'
 
 
 const Page = () => {
@@ -13,7 +13,7 @@ const Page = () => {
         },
         add: {
             show: true,
-            api: RoleStore.addRole
+            api: RoleStore.addRole,
         },
         delete: {
             show: true,
@@ -37,14 +37,6 @@ const Page = () => {
             rules: [{ required: true }]
         },
         {
-            title: '标识',
-            key: 'key',
-            formType: 'input',
-            addDisplay: true,
-            editDisplay: true,
-            rules: [{ required: true }]
-        },
-        {
             title: '备注',
             key: 'remark',
             formType: 'text-area',
@@ -55,11 +47,20 @@ const Page = () => {
         {
             title: '菜单',
             key: 'menus',
-            formType: 'select',
+            formType: 'treeSelect',
             addDisplay: true,
             editDisplay: true,
+            width: 250,
+            ellipsis: true,
+            attribute: {
+                treeCheckable: true,
+                allowClear: true,
+                showArrow: true,
+                maxTagCount: 'responsive'
+            },
             opts: {
-                data: [{ label: 'abc', value: '1' },{ label: 'def', value: '2' },{ label: 'gds', value: '3' }]
+                ...getOptions({pageIndex: 1, limit: 200}, '/api/v1/menus/menusList'),
+                enum: { label: 'label', value: 'key' }
             }
         },
     ]

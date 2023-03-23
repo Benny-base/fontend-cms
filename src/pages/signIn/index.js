@@ -10,6 +10,7 @@ const Page = () => {
         if(res.code) return
         UserStore.setToken(res.data.token)
         UserStore.setInfo(res.data)
+        window.umi_render(res.data.routes);
         history.push('/home')
     };
       

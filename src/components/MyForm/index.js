@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useImperativeHandle, forwardRef } from 'react'
 import cls from './index.less';
-import { Row, Col, Input, InputNumber, Form, Button, Space, Select, Cascader, DatePicker } from 'antd'
+import { Row, Col, Input, InputNumber, Form, Button, Space, Select, Cascader, DatePicker, TreeSelect } from 'antd'
 import { useI18n, wait, formatFormData, transformEnum } from '@/utils'
 import _ from 'lodash'
 import request from '@/utils/request'
@@ -21,12 +21,7 @@ export default forwardRef((props, ref) => {
     } = props
 
     useImperativeHandle(ref, () => ({
-        finish: () => {
-            form.submit()   // 触发 onFinish
-        },
-        reset: () => {
-            onReset()
-        }
+        form: form
     }))
 
     useEffect(() => {
@@ -66,7 +61,8 @@ export default forwardRef((props, ref) => {
             case 'input': return <Input style={{ width: '100%' }} {...item.attribute} />
             case 'input-number': return <InputNumber style={{ width: '100%' }} {...item.attribute} />
             case 'select': return <Select options={optData[item.key]} {...item.attribute} />
-            case 'cascader': return <Cascader options={optData[item.key]} {...item.attribute} />
+            case 'cascader': return <Cascader options={optData[item.key]} {...item.attribute} showCheckedStrategy={Cascader.SHOW_CHILD} />
+            case 'treeSelect': return <TreeSelect treeData={optData[item.key]} {...item.attribute} showCheckedStrategy={TreeSelect.SHOW_CHILD} />
             case 'date-picker': return <DatePicker style={{ width: '100%' }} {...item.attribute} />
             case 'text-area': return <TextArea style={{ width: '100%' }} {...item.attribute} />
             default: return <Row />

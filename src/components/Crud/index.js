@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from 'react'
 import cls from './index.less';
 import { Table, Button, Space, message, Drawer } from 'antd'
-import OperationDropdown from './OperationDropdown'
+import Operation from './Operation'
 import SearchList from './SearchList'
 import { MyForm } from '@/components'
 import { useI18n } from '@/utils'
@@ -45,12 +45,18 @@ export default (props) => {
 
     const handleFormSubmit = async(values) => {
         console.log(values)
+        let res = {}
         if(drawer.type == 'add'){
-            defaultOptions.add.api?.(values)
+            const val = options.add?.beforeAdd?.(values)
+            res = await options.add.api?.(val || values)
         }
         else if(drawer.type == 'edit'){
-
+            const val = options.edit?.beforeEdit?.(values)
+            res = await options.edit.api?.(val || values)
         }
+        if(res?.code) return
+        message.success(res.message)
+        getList()
         handleDrawerClose()
     }
 
@@ -69,7 +75,7 @@ export default (props) => {
 
     const handleDrawerClose = async() => {
         setDrawer({ ...drawer, visible: false })
-        formRef.current.reset()
+        formRef.current.form.resetFields()
     }
 
     const handleAddAction = async() => {
@@ -100,7 +106,14 @@ export default (props) => {
         },
         add: {
             show: false,
+            api: Function,
+            beforeAdd: Function,
             ...options.add
+        },
+        edit: {
+            api: Function,
+            beforeEdit: Function,
+            ...options.edit
         },
         delete: {
             show: false,
@@ -108,12 +121,13 @@ export default (props) => {
         },
         operation: {
             show: true,
-            // title: _t('operation'),
+            title: _t('operation'),
             fixed: 'right',
             width: 100,
-            editDisplay: true,
+            hideEdit: false,
             editAction: handleEditAction,
-            render: (record) => <OperationDropdown record={record} options={defaultOptions.operation} />,
+            extraOperation: [],
+            render: (text, record) => <Operation record={record} options={defaultOptions.operation} />,
             ...options.operation
         },
         search: {
@@ -154,7 +168,7 @@ export default (props) => {
                 extra={
                     <Space size={'middle'}>
                         <Button onClick={handleDrawerClose}>{ _t('cancel') }</Button>
-                        <Button onClick={() => formRef.current.finish()} type="primary">{ _t('submit') }</Button>
+                        <Button onClick={() => formRef.current.form.submit()} type="primary">{ _t('submit') }</Button>
                     </Space>
                 }
             >

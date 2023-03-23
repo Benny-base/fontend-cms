@@ -20,7 +20,7 @@ export default (props) => {
     let menuItems = handleMenu(routes)
     const activeMenu = findCurrentMenu(menuItems, pathname)
     // console.log(routes)
-    console.log(menuItems)
+    // console.log(menuItems)
 
     return (
         <Layout>
@@ -66,6 +66,7 @@ function handleMenu(routes){
     let arr = []
     routes.map(t1 => {
         if(t1.hidden) return    // 不显示在菜单
+        if(!t1.path) return     // 增加404.js 多了一个无path的route 忽略它
         // 处理层级菜单
         let names = t1.path.split('/').slice(1)
         let firstKey = `/${names.at(0)}`
