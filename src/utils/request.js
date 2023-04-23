@@ -2,6 +2,7 @@ import { getLocale, request } from 'umi'
 import { langConfig } from '@/utils'
 import { UserStore } from '@/stores'
 import { history } from 'umi';
+import { message } from 'antd'
 
 export const requestConfig = {
     timeout: 10000,
@@ -19,6 +20,7 @@ export const requestConfig = {
                 UserStore.setToken('')
                 history.replace('/signIn')
             }
+            else if(data.code) message.error(data.message)
             return response
         }
     ],
